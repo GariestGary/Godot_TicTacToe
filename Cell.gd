@@ -1,6 +1,6 @@
 extends Control
 
-signal changed
+export var index = 0
 
 func on_click():
 	Gameplay.click()
