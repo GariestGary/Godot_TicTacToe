@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using System.Linq;
@@ -8,8 +9,10 @@ public class Gameplay: Node2D
 	public int sizeY => 3;
 	private int winLineCount = 3;
 
+	public event Action WinEvent;
+
 	public bool IsCurrentCross { get; private set; } = false;
-	private bool won = false;
+	public bool Won { get; private set; } = false;
 
 	private Texture cross = ResourceLoader.Load<Texture>("res://sprites/signs/cross.png");
 	private Texture circle = ResourceLoader.Load<Texture>("res://sprites/signs/circle.png");
@@ -51,8 +54,9 @@ public class Gameplay: Node2D
 
 	public void Click(Vector2 index)
 	{
+		if(Won) return;
+		
 		IsCurrentCross = !IsCurrentCross;
-		GD.Print(index);
 		CheckWin(index);
 	}
 
@@ -98,7 +102,8 @@ public class Gameplay: Node2D
 
 					if (currentMatchCount >= winLineCount)
 					{
-						GD.Print("WIN");
+						Won = true;
+						WinEvent?.Invoke();
 						stop = true;
 						break;
 					}

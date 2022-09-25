@@ -16,7 +16,7 @@ public class Cell : Control
 
 	public void OnClick()
 	{
-		if(State != State.NULL) return;
+		if(State != State.NULL || gameplay.Won) return;
 		
 		State = gameplay.IsCurrentCross ? State.CROSS : State.CIRCLE;
 		gameplay.Click(Index);
